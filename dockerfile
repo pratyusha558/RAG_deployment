@@ -14,9 +14,6 @@ COPY main.py .
 # Copy the company documents the RAG system searches through
 COPY data /app/_data
 
-RUN echo "===== APP CONTENTS =====" && ls -la /app
-RUN echo "===== DATA CONTENTS =====" && ls -la /app/_data
-
 # TF-IDF version — no model download, starts in under 2 seconds
 # Switch back to streamlit_app.py to use the ChromaDB version locally
 CMD ["streamlit", "run", "streamlit_app.py", "--server.port=10000", "--server.address=0.0.0.0"]
