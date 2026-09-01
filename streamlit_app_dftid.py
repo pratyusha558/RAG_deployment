@@ -240,6 +240,17 @@ def load_rag():
             chunks.append(para)
             sources.append(filename)
 
+    # print("TOTAL CHUNKS:", len(chunks))
+
+    # vectorizer = TfidfVectorizer(
+    #     stop_words="english",
+    #     ngram_range=(1, 2),
+    #     max_features=10000
+    # )
+
+    # print("STARTING TF-IDF")
+
+    # tfidf_matrix = vectorizer.fit_transform(chunks)
     print("TOTAL CHUNKS:", len(chunks))
 
     vectorizer = TfidfVectorizer(
@@ -252,6 +263,7 @@ def load_rag():
 
     tfidf_matrix = vectorizer.fit_transform(chunks)
 
+    print("TF-IDF FINISHED")
     print("TF-IDF FINISHED")
 
     client = OpenAI(
