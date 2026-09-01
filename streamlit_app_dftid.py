@@ -201,15 +201,44 @@ def load_rag():
             chunks.append(para)
             sources.append(filename)
 
-    # Build the TF-IDF document-term matrix.
-    # fit_transform() does fit() + transform() in one step.
-    # After this, vectorizer "knows" the vocabulary of the entire document set.
-    vectorizer   = TfidfVectorizer(
-        stop_words="english",
-        ngram_range=(1, 2),
-        max_features=10000
-    )
+    # # Build the TF-IDF document-term matrix.
+    # # fit_transform() does fit() + transform() in one step.
+    # # After this, vectorizer "knows" the vocabulary of the entire document set.
+    # vectorizer   = TfidfVectorizer(
+    #     stop_words="english",
+    #     ngram_range=(1, 2),
+    #     max_features=10000
+    # )
     tfidf_matrix = vectorizer.fit_transform(chunks)
+    print("START load_rag")
+
+    for filename in sorted(os.listdir(DATA_FOLDER)):
+        if not filename.endswith(".txt"):
+            continue
+
+    print("Reading:", filename)
+
+    with open(os.path.join(DATA_FOLDER, filename), "r") as f:
+        text = f.read()
+
+    for para in text.strip().split("\n\n"):
+        para = para.strip()
+
+        if len(para) < 50:
+            continue
+        if para.startswith("===="):
+            continue
+
+        chunks.append(para)
+        sources.append(filename)
+
+    print("TOTAL CHUNKS:", len(chunks))
+
+    print("STARTING TF-IDF")
+
+    tfidf_matrix = vectorizer.fit_transform(chunks)
+
+    print("TF-IDF FINISHED")
     # tfidf_matrix.shape = (n_chunks, n_vocab_terms)
     # e.g. (120, 8547) for our document set
 
